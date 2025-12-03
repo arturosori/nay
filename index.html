@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Para mi Nayeli — Carta</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-1: #120616;
+      --bg-2: #4a1438;
+      --card-bg: rgba(255,255,255,0.05);
+      --accent1: #ffbfd9;
+      --accent2: #ff7da1;
+      --glass: rgba(255,255,255,0.06);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Montserrat,system-ui,Arial;background:linear-gradient(135deg,var(--bg-1),var(--bg-2));color:#fff;overflow-x:hidden}
+
+    /* layout */
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;position:relative;z-index:1}
+    .card{
+      width:100%;max-width:980px;background:var(--card-bg);border-radius:20px;padding:28px;backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,0.06);box-shadow:0 20px 60px rgba(0,0,0,0.6);position:relative;z-index:5;overflow:hidden;
+    }
+
+    /* hero photo */
+    .hero{
+      width:100%;border-radius:16px;overflow:hidden;margin-bottom:18px;display:flex;justify-content:center;
+      transition:transform .9s ease;
+    }
+    .hero img{
+      width:100%;height:auto;max-height:420px;object-fit:cover;display:block;
+      border-radius:12px;box-shadow:0 10px 35px rgba(0,0,0,0.6);transform:scale(1);
+    }
+    /* romantic frame + glow */
+    .photo-frame{
+      position:relative;display:block;
+      border-radius:16px;padding:6px;background:linear-gradient(180deg, rgba(255,140,170,0.06), rgba(255,200,230,0.02));
+      box-shadow:0 10px 35px rgba(255,120,170,0.06) inset;
+      transition: box-shadow .6s ease, transform .6s ease;
+    }
+    .photo-frame::after{
+      content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;
+      box-shadow: 0 0 45px rgba(255,150,200,0.18);
+      mix-blend-mode: screen;
+    }
+
+    /* titles */
+    h1{font-family:'Great Vibes',cursive;font-size:56px;margin:0;text-align:center;color:var(--accent1);text-shadow:0 6px 18px rgba(0,0,0,0.45)}
+    h2{font-family:'Playfair Display',serif;font-size:20px;margin:6px 0 18px;text-align:center;opacity:.95}
+
+    /* content text */
+    .content{font-size:18px;line-height:1.7;color:rgba(255,255,255,0.95);}
+    .highlight{display:block;margin:20px auto;padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,var(--accent2),var(--accent1));font-weight:700;width:max-content;color:#fff;box-shadow:0 8px 30px rgba(255,120,170,0.12)}
+
+    /* writing area and cursor */
+    .txt p{opacity:0;margin:16px 0}
+    .typing { border-right: 3px solid rgba(255,255,255,0.9); padding-right:6px; display:inline-block; white-space:pre-wrap; }
+
+    /* decorative bottom roses */
+    .footer-note{text-align:center;margin-top:18px;font-family:'Great Vibes',cursive;color:#ffd1df}
+
+    /* particles canvas under everything */
+    #particles{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* petals & hearts - placed above particles but below card */
+    .floating-wrap{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+    .petal, .heart {
+      position:absolute;top:-10%;font-size:26px;opacity:0.95;will-change:transform,opacity;
+      text-shadow:0 2px 6px rgba(0,0,0,0.45)
+    }
+
+    /* lightning bolt style */
+    .bolt {
+      position:fixed;top:0;width:4px;height:100%;background:linear-gradient(white, rgba(255,255,255,0.05));filter:drop-shadow(0 0 18px white);
+      z-index:6;pointer-events:none;mix-blend-mode:screen;
+    }
+    /* small controls fallback */
+    #playFallback{
+      position:fixed;right:18px;bottom:18px;z-index:9999;border:none;padding:10px 14px;border-radius:999px;
+      background:linear-gradient(90deg,var(--accent2),var(--accent1));color:white;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,0.35);display:none;cursor:pointer;
+    }
+
+    /* responsive */
+    @media (max-width:720px){
+      h1{font-size:40px}
+      .hero img{max-height:300px}
+      .card{padding:18px}
+      .content{font-size:16px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- audios (replace files) -->
+  <audio id="bgmusic" src="amor.mp3" loop playsinline></audio>
+  <audio id="thunder" src="amor.mp3" loop playsinline hidden></audio>
+
+  <!-- fallback button (shown only if autoplay blocked) -->
+  <button id="playFallback" aria-label="Reproducir música">▶ Música</button>
+
+  <!-- background particles -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- floating petals & hearts -->
+  <div class="floating-wrap" aria-hidden="true"></div>
+
+  <!-- main content card -->
+  <div class="wrap">
+    <main class="card" role="main" aria-label="Carta romántica a Nayeli">
+
+      <div class="photo-frame" style="margin-bottom:10px;">
+        <div class="hero">
+          <!-- YOUR IMAGE: put amor.jpg next to this html file -->
+		  
+          <img id="heroPhoto" src="amor.jpg" alt="Nayeli TE AMO" />
+
+<style>
+#heroPhoto {
+  width: 330px;
+  height: auto;
+  border-radius: 22px;
+  box-shadow: 0 0 25px rgba(255, 90, 120, 0.55);
+  border: 3px solid rgba(255, 160, 190, 0.6);
+  animation: romanticGlow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes romanticGlow {
+  0% { box-shadow: 0 0 18px rgba(255, 100, 150, 0.5); }
+  100% { box-shadow: 0 0 35px rgba(255, 50, 100, 0.9); }
+}
+</style>
+
+        </div>
+      </div>
+
+      <h1 id="title">Para mi Nayeli</h1>
+      <h2 id="subtitle">La mujer que me mueve el alma, la vida y el corazón.</h2>
+
+      <section class="content txt" id="textArea" aria-live="polite">
+        <!-- paragraphs will be typed sequentially by JS -->
+        <p class="para">Mi Nayeli amor mio ojala pudieras ver todo lo que significas para mi la casa sin ti no es silencio es realmente un vacío que respira tu nombre a veces hablo al aire pensando que en cualquier momento vas a cruzar la puerta porque asi de grande es tu presencia incluso cuando no estas no estas sola nos tienes a nosotros tu familia.</p>
+
+        <p class="para">Te extrañamos mucho en cada rincón de la casa, estás tú. Te vemos en todos lados, eres tú en cada respiro. No sabes cuánto duele estar sin ti… tu risa, tu olor, tu presencia.</p>
+
+        <p class="para">Quiero decirte algo sin filtros:</p>
+        <div class="highlight para">🌹 TÚ, NAYE, ERES IMPORTANTE. TE AMO. 🌹</div>
+
+        <p class="para">Más de lo que tú crees. Más de lo que la vida te ha dejado sentir.</p>
+
+        <p class="para">No estás sola en ese lugar. No estás ahí porque te rendiste. Estás ahí porque TIENES FUTURO. Porque aún hay vida por reconstruir, un camino que solo tú puedes volver a abrir. Dentro de ti hay fuerza que ni tú imaginas.</p>
+
+        <p class="para">Sé que el anexo no es fácil, sé que duele, cansa y quiebra. Pero si supieras cuánto te amamos… entenderías que fue la decisión más difícil que hemos tomado. No lo hicimos para alejarte… lo hicimos para NO PERDERTE.</p>
+
+        <p class="para">Kaori, Luis y Arturo te esperan todos los días. Te dibujan, te nombran, te sueñan. No te ven rota, no te ven débil. Te ven como su mamá: la que huele bonito, la que abraza fuerte, la que siempre encuentra la forma de levantarse.</p>
+
+        <p class="para">Tú eres la mujer que me movió el mundo, la que elegí y sigo eligiendo. Estás hecha para RENACER.</p>
+
+        <p class="para">No estás sola mi amor. Aunque no nos veas, estamos contigo. Aunque no nos escuches, estamos contigo. Aunque el mundo se te haga pesado seguimos aquí firmes y orgullosos de cada paso que das.</p>
+
+        <p class="para">Y cuando salgas —porque VAS A SALIR— quiero abrazarte tan fuerte que el tiempo se detenga. Te quiero en casa con tus hijos, conmigo, con la vida que aún te espera.</p>
+
+        <p class="para">No te rindas mi amor. No te rompas mi amor. No te pierdas mi amor. Te amo. Tus hijos te aman. Te necesitamos. </p>
+        <div class="highlight para">🌹 Te esperamos. MI AMOR ECHALE GANAS TU PUEDES.🌹</div>
+
+      </section>
+
+      <div class="footer-note">"Eres mi vida, mi fuerza y mi razón. Y aquí sigo… amándote sin pausas."</div>
+
+    </main>
+  </div>
+
+  <!-- hidden area for bolts (we add elements dynamically) -->
+  <div id="bolt-area" aria-hidden="true"></div>
+
+<script>
+/* ----------------------------- Autoplay music + fallback ----------------------------- */
+const bg = document.getElementById('bgmusic');
+const thunder = document.getElementById('thunder');
+const btn = document.getElementById('playFallback');
+
+async function tryAutoplay() {
+  try {
+    // start muted attempt to increase chance
+    bg.volume = 0;
+    const p = bg.play();
+    if (p !== undefined) {
+      await p;
+      // fade in volume
+      fadeVolume(0, 0.7, 1200);
+      // optionally start thunder (muted) if exists
+      if (thunder) { thunder.volume = 0; thunder.play().catch(()=>{}); fadeVolumeElem(thunder, 0, 0.15, 800); }
+      btn.style.display = 'none';
+    }
+  } catch (e) {
+    // autoplay blocked
+    btn.style.display = 'block';
+  }
+}
+
+function fadeVolume(from, to, ms) {
+  const steps = 20;
+  let current = from;
+  const delta = (to - from) / steps;
+  const t = setInterval(() => {
+    current += delta;
+    bg.volume = Math.max(0, Math.min(1, current));
+    if ((delta > 0 && current >= to) || (delta < 0 && current <= to)) { bg.volume = to; clearInterval(t); }
+  }, ms / steps);
+}
+function fadeVolumeElem(el, from, to, ms){
+  const steps = 12;
+  let cur = from; const delta = (to-from)/steps;
+  const tick = setInterval(()=>{ cur+=delta; el.volume = Math.max(0,Math.min(1,cur)); if((delta>0&&cur>=to)||(delta<0&&cur<=to)){ el.volume=to; clearInterval(tick); } }, ms/steps);
+}
+
+btn.addEventListener('click', async () => {
+  try {
+    await bg.play(); fadeVolume(0, 0.75, 800);
+    if (thunder) { try { thunder.play(); fadeVolumeElem(thunder,0,0.12,800); } catch(e){} }
+    btn.style.display='none';
+  } catch (e) { console.error(e) }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  tryAutoplay();
+  // try again on first user interaction (some browsers require gesture)
+  function onceInteract(){ if(bg.paused) { bg.play().then(()=>fadeVolume(0,0.75,800)).catch(()=>{}); } window.removeEventListener('click',onceInteract); window.removeEventListener('touchstart',onceInteract); }
+  window.addEventListener('click', onceInteract);
+  window.addEventListener('touchstart', onceInteract);
+});
+
+/* ----------------------------- Particles (canvas) ----------------------------- */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W = canvas.width = innerWidth;
+let H = canvas.height = innerHeight;
+const particles = [];
+function rand(min,max){return Math.random()*(max-min)+min}
+
+class P {
+  constructor(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.r = rand(0.6,2.6);
+    this.vx = rand(-0.25,0.25);
+    this.vy = rand(-0.15,0.15);
+    this.alpha = rand(0.12,0.42);
+    this.color = `rgba(255,180,220,${this.alpha})`;
+  }
+  update(){
+    this.x += this.vx; this.y += this.vy;
+    if(this.x < -10) this.x = W + 10;
+    if(this.x > W + 10) this.x = -10;
+    if(this.y < -10) this.y = H + 10;
+    if(this.y > H + 10) this.y = -10;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+function initParticles(){ particles.length=0; for(let i=0;i<160;i++)particles.push(new P()); }
+function loopParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{ p.update(); p.draw(); });
+  requestAnimationFrame(loopParticles);
+}
+initParticles(); loopParticles();
+addEventListener('resize', ()=>{ W = canvas.width = innerWidth; H = canvas.height = innerHeight; initParticles(); });
+
+/* ----------------------------- Floating petals & hearts ----------------------------- */
+const floating = document.querySelector('.floating-wrap');
+function spawnFloating(count=8){
+  for(let i=0;i<count;i++){
+    const el = document.createElement('div');
+    const isRose = Math.random() > 0.5;
+    el.className = isRose ? 'petal' : 'heart';
+    el.textContent = isRose ? '🌹' : (Math.random()>0.5 ? '❤️' : '💖');
+    const size = Math.floor(rand(18,44));
+    el.style.fontSize = size+'px';
+    el.style.left = rand(2,92)+'%';
+    el.style.top = rand(-20,-5)+'%';
+    el.style.opacity = rand(0.6,0.95);
+    floating.appendChild(el);
+
+    const dur = rand(8000,17000);
+    const sway = rand(-60,60);
+    const rot = rand(-180,180);
+    el.animate([
+      { transform: `translateY(0) translateX(0) rotate(0deg)`, opacity: el.style.opacity },
+      { transform: `translateY(${innerHeight+200}px) translateX(${sway}px) rotate(${rot}deg)`, opacity: 0.05 }
+    ], { duration: dur, easing: 'linear' });
+
+    setTimeout(()=>{ el.remove(); }, dur+200);
+  }
+}
+setInterval(()=>spawnFloating(4), 1800);
+spawnFloating(14);
+
+/* ----------------------------- Lightning bolts (rayos) ----------------------------- */
+const boltArea = document.getElementById('bolt-area');
+function lightningBolt(){
+  const bolt = document.createElement('div');
+  bolt.className = 'bolt';
+  bolt.style.left = rand(6,88)+'%';
+  document.body.appendChild(bolt);
+
+  // flash overlay to simulate illumination
+  const flash = document.createElement('div');
+  flash.style.position = 'fixed';
+  flash.style.inset = '0';
+  flash.style.zIndex = 4;
+  flash.style.pointerEvents = 'none';
+  flash.style.background = 'rgba(255,255,255,0.0)';
+  document.body.appendChild(flash);
+
+  // animate bolt zigzag using keyframes programmatically
+  bolt.animate([
+    { transform: 'translateX(0) scaleY(1)', opacity: 1 },
+    { transform: `translateX(${rand(-30,30)}px) scaleY(1)`, opacity: 1 },
+    { transform: 'translateX(0) scaleY(1)', opacity: 1 }
+  ], { duration: 120, easing: 'ease-out' });
+
+  // flash effect
+  flash.animate([
+    { background: 'rgba(255,255,255,0)' },
+    { background: 'rgba(255,255,255,'+rand(0.18,0.45)+')' },
+    { background: 'rgba(255,255,255,0)' }
+  ], { duration: 280, easing: 'ease-out' });
+
+  // short sound effect trigger if thunder audio present (not necessary)
+  // fade thunder slightly to blend
+  if (thunder && !thunder.paused) {
+    // small volume swell on thunder for each bolt
+    try { thunder.volume = Math.min(0.18, (thunder.volume||0.08)+0.02); } catch(e){}
+  }
+
+  setTimeout(()=>{ bolt.remove(); flash.remove(); }, 420);
+}
+// random bolts interval
+setInterval(()=>{ if(Math.random()<0.28) lightningBolt(); }, 700);
+
+/* ----------------------------- Typing (paragraph by paragraph) ----------------------------- */
+const paras = Array.from(document.querySelectorAll('.para'));
+paras.forEach(p => p.style.opacity = 1); // keep visible but we'll clear text
+const texts = paras.map(p => p.textContent.trim());
+paras.forEach(p => p.textContent = ''); // clear displayed text
+
+// typing speed base (ms per character) - we keep moderate, can sync to audio later
+const baseSpeed = 28;
+
+async function typeParagraphs() {
+  for (let i = 0; i < texts.length; i++) {
+    const pEl = paras[i];
+    const text = texts[i];
+    // reveal line by line
+    pEl.classList.add('typing');
+    for (let j = 0; j < text.length; j++) {
+      pEl.textContent += text[j];
+      // small variance so it feels human
+      await new Promise(r => setTimeout(r, baseSpeed + Math.round(rand(-6,18))));
+    }
+    pEl.classList.remove('typing');
+    // pause a bit before next paragraph
+    await new Promise(r => setTimeout(r, 420 + Math.round(rand(0,380))));
+  }
+}
+setTimeout(typeParagraphs, 900);
+
+/* ----------------------------- Accessibility & performance tweaks ----------------------------- */
+// respect prefers-reduced-motion
+const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (mq.matches) {
+  // stop heavy animations
+  particles.length = 0;
+  document.querySelectorAll('.petal, .heart').forEach(n=>n.remove());
+  document.querySelectorAll('.bolt').forEach(n=>n.remove());
+  // do not spawn floating items
+  clearInterval();
+}
+
+/* ----------------------------- Small utility ----------------------------- */
+function rand(min,max){return Math.random()*(max-min)+min}
+</script>
+
+</body>
+</html>
+
+
+
+</body>
+</html>
+
+
